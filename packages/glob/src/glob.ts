@@ -36,6 +36,10 @@ export async function hashFiles(
   if (options && typeof options.followSymbolicLinks === 'boolean') {
     followSymbolicLinks = options.followSymbolicLinks
   }
+  let allowOutsideWorkspace = false
+  if (options && typeof options.allowOutsideWorkspace === 'boolean') {
+    allowOutsideWorkspace = options.allowOutsideWorkspace
+  }
   const globber = await create(patterns, {followSymbolicLinks})
-  return _hashFiles(globber, currentWorkspace, verbose)
+  return _hashFiles(globber, currentWorkspace, verbose, allowOutsideWorkspace)
 }

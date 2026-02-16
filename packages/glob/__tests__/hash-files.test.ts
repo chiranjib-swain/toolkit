@@ -123,6 +123,88 @@ describe('globber', () => {
       '4e911ea5824830b6a3ec096c7833d5af8381c189ffaa825c3503a5333a73eadc'
     )
   })
+
+  it('should ignore files outside workspace by default', async () => {
+    // Create a file outside the workspace
+    const outsideDir = path.join('/tmp', 'outside-workspace-test')
+    await fs.mkdir(outsideDir, {recursive: true})
+    await fs.writeFile(
+      path.join(outsideDir, 'outside.txt'),
+      'outside file content'
+    )
+
+    // Try to hash the file without allowOutsideWorkspace
+    const hash = await hashFiles(`${outsideDir}/*`)
+
+    // Should return empty string since file is outside workspace
+    expect(hash).toEqual('')
+
+    // Clean up
+    await io.rmRF(outsideDir)
+  })
+
+  it('should hash files outside workspace when allowOutsideWorkspace is true', async () => {
+    // Create a file outside the workspace
+    const outsideDir = path.join('/tmp', 'outside-workspace-test-allowed')
+    await fs.mkdir(outsideDir, {recursive: true})
+    await fs.writeFile(
+      path.join(outsideDir, 'outside.txt'),
+      'outside file content'
+    )
+
+    // Try to hash the file with allowOutsideWorkspace: true
+    const hash = await hashFiles(`${outsideDir}/*`, '', {
+      allowOutsideWorkspace: true
+    })
+
+    // Should return a valid hash since we allowed outside workspace
+    expect(hash).toBeTruthy()
+    expect(hash.length).toBeGreaterThan(0)
+
+    // Clean up
+    await io.rmRF(outsideDir)
+  })
+
+  it('should still respect workspace when allowOutsideWorkspace is false', async () => {
+    // Create a file outside the workspace
+    const outsideDir = path.join('/tmp', 'outside-workspace-test-explicit')
+    await fs.mkdir(outsideDir, {recursive: true})
+    await fs.writeFile(
+      path.join(outsideDir, 'outside.txt'),
+      'outside file content'
+    )
+
+    // Explicitly set allowOutsideWorkspace to false
+    const hash = await hashFiles(`${outsideDir}/*`, '', {
+      allowOutsideWorkspace: false
+    })
+
+    // Should return empty string since file is outside workspace
+    expect(hash).toEqual('')
+
+    // Clean up
+    await io.rmRF(outsideDir)
+  })
+
+  it('should allow hashing action files with custom workspace', async () => {
+    // Simulate GITHUB_ACTION_PATH scenario
+    const actionDir = path.join('/tmp', 'action-path-test')
+    await fs.mkdir(actionDir, {recursive: true})
+    await fs.writeFile(
+      path.join(actionDir, 'action.yml'),
+      'action file content'
+    )
+
+    // Hash files using action directory as currentWorkspace
+    const hash = await hashFiles(`${actionDir}/*`, actionDir)
+
+    // Should return a valid hash
+    expect(hash).toBeTruthy()
+    expect(hash.length).toBeGreaterThan(0)
+
+    // Clean up
+    await io.rmRF(actionDir)
+  })
 })
 
 function getTestTemp(): string {

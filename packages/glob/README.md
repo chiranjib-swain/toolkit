@@ -16,6 +16,52 @@ const globber = await glob.create(patterns.join('\n'))
 const files = await globber.glob()
 ```
 
+### Hashing files
+
+You can use the `hashFiles` function to compute a SHA-256 hash of files matching a glob pattern:
+
+```js
+const glob = require('@actions/glob');
+
+const hash = await glob.hashFiles('**/package-lock.json')
+```
+
+#### Default behavior: workspace-only hashing
+
+By default, `hashFiles` only hashes files within the `GITHUB_WORKSPACE` directory for security reasons. Files outside the workspace are ignored.
+
+```js
+// Files outside GITHUB_WORKSPACE are ignored by default
+const hash = await glob.hashFiles('/tmp/some-file.txt')  // Returns empty string
+```
+
+#### Hashing files in composite actions
+
+For composite actions that need to hash their own action files, set the `currentWorkspace` parameter to `process.env.GITHUB_ACTION_PATH`:
+
+```js
+// Hash files within the action's directory
+const hash = await glob.hashFiles(
+  '**/action.yml',
+  process.env.GITHUB_ACTION_PATH  // Use action path as workspace
+)
+```
+
+#### Allow hashing files outside workspace (opt-in)
+
+If you truly need to hash files outside the workspace, you can explicitly opt-in using the `allowOutsideWorkspace` option:
+
+```js
+// ⚠️ Security warning: Only use this if you trust the file paths
+const hash = await glob.hashFiles(
+  '/path/to/files/**',
+  '',  // Use default workspace
+  { allowOutsideWorkspace: true }
+)
+```
+
+**Security Note:** The `allowOutsideWorkspace` option should be used with caution, as it allows hashing files outside the workspace boundary. Only use this when you fully trust the file paths being hashed.
+
 ### Opt out of following symbolic links
 
 ```js

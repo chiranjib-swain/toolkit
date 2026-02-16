@@ -1,0 +1,120 @@
+{
+  "run": {
+    "command": "lerna run tsc",
+    "startTime": "2026-02-16T06:43:11.369Z",
+    "endTime": "2026-02-16T06:43:26.068Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "@actions/io:tsc",
+      "target": "tsc",
+      "projectName": "@actions/io",
+      "hash": "5abc1ebc93df0996c61dd143dfbd1ad33cffe74d2a3e2f7df272b542a9679a43",
+      "startTime": "2026-02-16T06:43:11.373Z",
+      "endTime": "2026-02-16T06:43:13.144Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/http-client:tsc",
+      "target": "tsc",
+      "projectName": "@actions/http-client",
+      "hash": "c8990809af277a7ee7738703e2cf00c16e44d5d8d3cc097c0d89b2cac049b77e",
+      "startTime": "2026-02-16T06:43:11.373Z",
+      "endTime": "2026-02-16T06:43:13.353Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/exec:tsc",
+      "target": "tsc",
+      "projectName": "@actions/exec",
+      "hash": "91937f17e640746991c75fd7adf7332c0e07f0ad59fb86c58d424fd30db95d81",
+      "startTime": "2026-02-16T06:43:13.144Z",
+      "endTime": "2026-02-16T06:43:14.961Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/github:tsc",
+      "target": "tsc",
+      "projectName": "@actions/github",
+      "hash": "84b91fbab0bba97a9d685b3ad94ccfb87dadaf4967e9107c053fe93ff225a827",
+      "startTime": "2026-02-16T06:43:13.353Z",
+      "endTime": "2026-02-16T06:43:15.751Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/core:tsc",
+      "target": "tsc",
+      "projectName": "@actions/core",
+      "hash": "f70854918a2a88d2eaed925adc4f44504ea65bd7803380c5616a52925c8c010b",
+      "startTime": "2026-02-16T06:43:14.961Z",
+      "endTime": "2026-02-16T06:43:16.621Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/tool-cache:tsc",
+      "target": "tsc",
+      "projectName": "@actions/tool-cache",
+      "hash": "3c2132b4bfbfca9438b47174dd7b50fda03a1a37cd43b3d36f17474585cb9437",
+      "startTime": "2026-02-16T06:43:16.621Z",
+      "endTime": "2026-02-16T06:43:20.333Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/glob:tsc",
+      "target": "tsc",
+      "projectName": "@actions/glob",
+      "hash": "c212c599e8e91dd4b64f5cd1ee766669d88be071a24dbc32e801339ff9edd191",
+      "startTime": "2026-02-16T06:43:16.621Z",
+      "endTime": "2026-02-16T06:43:20.429Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/attest:tsc",
+      "target": "tsc",
+      "projectName": "@actions/attest",
+      "hash": "06e5a2a3500560ac98ab6c7c90c61c1dd9f7575bed0075fc2e933d79dfc3c534",
+      "startTime": "2026-02-16T06:43:16.621Z",
+      "endTime": "2026-02-16T06:43:22.258Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/cache:tsc",
+      "target": "tsc",
+      "projectName": "@actions/cache",
+      "hash": "d8c261bd74d9ac7c06b8e6153d7798ccc1ae08ce7149a464353722cfa0ed9c59",
+      "startTime": "2026-02-16T06:43:20.429Z",
+      "endTime": "2026-02-16T06:43:23.982Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "@actions/artifact:tsc",
+      "target": "tsc",
+      "projectName": "@actions/artifact",
+      "hash": "6f3fd761dd33acbca92dd91a79d816622a0cda45c6132a819e17b843a6b00908",
+      "startTime": "2026-02-16T06:43:16.621Z",
+      "endTime": "2026-02-16T06:43:26.068Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    }
+  ]
+}
