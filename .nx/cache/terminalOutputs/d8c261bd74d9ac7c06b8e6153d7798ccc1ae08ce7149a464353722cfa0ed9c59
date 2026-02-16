@@ -1,4 +1,0 @@
-
-> @actions/cache@6.0.0 tsc
-> tsc && cp src/internal/shared/package-version.cjs lib/internal/shared/
-

@@ -1,4 +1,0 @@
-
-> @actions/core@3.0.0 tsc
-> tsc -p tsconfig.json
-
