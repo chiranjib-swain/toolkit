@@ -1,5 +1,6 @@
 import * as io from '../../io/src/io.js'
 import * as path from 'path'
+import * as os from 'os'
 import {hashFiles} from '../src/glob.js'
 import {promises as fs} from 'fs'
 
@@ -126,7 +127,7 @@ describe('globber', () => {
 
   it('should ignore files outside workspace by default', async () => {
     // Create a file outside the workspace
-    const outsideDir = path.join('/tmp', 'outside-workspace-test')
+    const outsideDir = path.join(os.tmpdir(), 'outside-workspace-test')
     await fs.mkdir(outsideDir, {recursive: true})
     await fs.writeFile(
       path.join(outsideDir, 'outside.txt'),
@@ -145,7 +146,7 @@ describe('globber', () => {
 
   it('should hash files outside workspace when allowOutsideWorkspace is true', async () => {
     // Create a file outside the workspace
-    const outsideDir = path.join('/tmp', 'outside-workspace-test-allowed')
+    const outsideDir = path.join(os.tmpdir(), 'outside-workspace-test-allowed')
     await fs.mkdir(outsideDir, {recursive: true})
     await fs.writeFile(
       path.join(outsideDir, 'outside.txt'),
@@ -167,7 +168,7 @@ describe('globber', () => {
 
   it('should still respect workspace when allowOutsideWorkspace is false', async () => {
     // Create a file outside the workspace
-    const outsideDir = path.join('/tmp', 'outside-workspace-test-explicit')
+    const outsideDir = path.join(os.tmpdir(), 'outside-workspace-test-explicit')
     await fs.mkdir(outsideDir, {recursive: true})
     await fs.writeFile(
       path.join(outsideDir, 'outside.txt'),
@@ -188,7 +189,7 @@ describe('globber', () => {
 
   it('should allow hashing action files with custom workspace', async () => {
     // Simulate GITHUB_ACTION_PATH scenario
-    const actionDir = path.join('/tmp', 'action-path-test')
+    const actionDir = path.join(os.tmpdir(), 'action-path-test')
     await fs.mkdir(actionDir, {recursive: true})
     await fs.writeFile(
       path.join(actionDir, 'action.yml'),
