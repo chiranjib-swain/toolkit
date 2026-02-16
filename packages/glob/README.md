@@ -32,7 +32,8 @@ By default, `hashFiles` only hashes files within the `GITHUB_WORKSPACE` director
 
 ```js
 // Files outside GITHUB_WORKSPACE are ignored by default
-const hash = await glob.hashFiles('/tmp/some-file.txt')  // Returns empty string
+// Returns empty string when no matching files are found
+const hash = await glob.hashFiles('/tmp/some-file.txt')
 ```
 
 #### Hashing files in composite actions
