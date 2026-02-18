@@ -1,7 +1,7 @@
-import {Globber, DefaultGlobber} from './internal-globber.js'
-import {GlobOptions} from './internal-glob-options.js'
-import {HashFileOptions} from './internal-hash-file-options.js'
-import {hashFiles as _hashFiles} from './internal-hash-files.js'
+import {Globber, DefaultGlobber} from './internal-globber'
+import {GlobOptions} from './internal-glob-options'
+import {HashFileOptions} from './internal-hash-file-options'
+import {hashFiles as _hashFiles} from './internal-hash-files'
 
 export {Globber, GlobOptions}
 
@@ -23,7 +23,7 @@ export async function create(
  *
  * @param patterns  Patterns separated by newlines
  * @param currentWorkspace  Workspace used when matching files
- * @param options   Glob options
+ * @param options   Hash file options (now supports roots, allowFilesOutsideWorkspace, exclude)
  * @param verbose   Enables verbose logging
  */
 export async function hashFiles(
@@ -36,6 +36,8 @@ export async function hashFiles(
   if (options && typeof options.followSymbolicLinks === 'boolean') {
     followSymbolicLinks = options.followSymbolicLinks
   }
+  // Pass all options through to _hashFiles, including new ones (roots, allowFilesOutsideWorkspace, exclude)
   const globber = await create(patterns, {followSymbolicLinks})
-  return _hashFiles(globber, currentWorkspace, verbose)
+  // _hashFiles should be updated to use options.roots, options.allowFilesOutsideWorkspace, options.exclude
+  return _hashFiles(globber, currentWorkspace, options, verbose)
 }

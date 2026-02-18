@@ -4,10 +4,9 @@
     "baseUrl": "./",
     "outDir": "./lib",
     "rootDir": "./src",
-    "module": "node16",
-    "moduleResolution": "node16"
+    "module": "es2022",
+    "moduleResolution": "node",
+    "declaration": true
   },
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }

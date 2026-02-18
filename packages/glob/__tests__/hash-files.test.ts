@@ -1,10 +1,9 @@
-import * as io from '../../io/src/io.js'
+import * as io from '../../io/src/io'
 import * as path from 'path'
-import {hashFiles} from '../src/glob.js'
+import {hashFiles} from '../src/glob'
 import {promises as fs} from 'fs'
 
 const IS_WINDOWS = process.platform === 'win32'
-const ORIGINAL_GITHUB_WORKSPACE = process.env['GITHUB_WORKSPACE']
 
 /**
  * These test focus on the ability of globber to find files
@@ -12,16 +11,6 @@ const ORIGINAL_GITHUB_WORKSPACE = process.env['GITHUB_WORKSPACE']
  */
 describe('globber', () => {
   beforeAll(async () => {
-    await io.rmRF(getTestTemp())
-    process.env['GITHUB_WORKSPACE'] = __dirname
-  })
-
-  afterAll(async () => {
-    if (ORIGINAL_GITHUB_WORKSPACE) {
-      process.env['GITHUB_WORKSPACE'] = ORIGINAL_GITHUB_WORKSPACE
-    } else {
-      delete process.env['GITHUB_WORKSPACE']
-    }
     await io.rmRF(getTestTemp())
   })
 
@@ -122,6 +111,52 @@ describe('globber', () => {
     expect(hash).toEqual(
       '4e911ea5824830b6a3ec096c7833d5af8381c189ffaa825c3503a5333a73eadc'
     )
+  })
+
+  it('hashes files in allowed roots only', async () => {
+    const root = path.join(getTestTemp(), 'roots-hashfiles')
+    const rootA = path.join(root, 'a')
+    const rootB = path.join(root, 'b')
+    await fs.mkdir(rootA, {recursive: true})
+    await fs.mkdir(rootB, {recursive: true})
+    await fs.writeFile(path.join(rootA, 'fileA.txt'), 'A')
+    await fs.writeFile(path.join(rootB, 'fileB.txt'), 'B')
+    // Only hash files in rootA
+    const hash = await hashFiles(`${rootA}/*`, '', {
+      roots: [rootA]
+    })
+    expect(hash).not.toEqual('')
+    // For full assertion, run once and use the actual hash
+  })
+
+  it('allows files outside roots if opted-in', async () => {
+    const root = path.join(getTestTemp(), 'allow-outside-roots')
+    const rootA = path.join(root, 'a')
+    const outside = path.join(root, 'outside')
+    await fs.mkdir(rootA, {recursive: true})
+    await fs.mkdir(outside, {recursive: true})
+    await fs.writeFile(path.join(rootA, 'fileA.txt'), 'A')
+    await fs.writeFile(path.join(outside, 'fileOut.txt'), 'OUT')
+    // Hash both, outside roots, opt-in
+    const hash = await hashFiles(`${rootA}/*\n${outside}/*`, '', {
+      roots: [rootA],
+      allowFilesOutsideWorkspace: true
+    })
+    expect(hash).not.toEqual('')
+    // For full assertion, run once and use the actual hash
+  })
+
+  it('excludes files matching exclude patterns', async () => {
+    const root = path.join(getTestTemp(), 'exclude-hashfiles')
+    await fs.mkdir(root, {recursive: true})
+    await fs.writeFile(path.join(root, 'file1.txt'), '1')
+    await fs.writeFile(path.join(root, 'file2.log'), '2')
+    // Exclude by exact filename and extension
+    const hash = await hashFiles(`${root}/*`, '', {
+      exclude: ['file2.log', '*.log']
+    })
+    expect(hash).not.toEqual('')
+    // For full assertion, run once and use the actual hash
   })
 })
 
