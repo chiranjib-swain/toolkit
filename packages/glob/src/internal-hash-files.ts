@@ -53,10 +53,10 @@ export async function hashFiles(
   const excludePatterns: string[] = options?.exclude ?? []
 
   // Log initial variables
-  writeDelegate(`githubWorkspace: ${githubWorkspace}`)
-  writeDelegate(`roots: ${JSON.stringify(roots)}`)
-  writeDelegate(`allowOutside: ${allowOutside}`)
-  writeDelegate(`excludePatterns: ${JSON.stringify(excludePatterns)}`)
+  console.log(`githubWorkspace: ${githubWorkspace}`)
+  console.log(`roots: ${JSON.stringify(roots)}`)
+  console.log(`allowOutside: ${allowOutside}`)
+  console.log(`excludePatterns: ${JSON.stringify(excludePatterns)}`)
 
   // Symlink Protection: resolve all roots up front
   let resolvedRoots: string[] = []
@@ -84,7 +84,7 @@ export async function hashFiles(
     let resolvedFile: string
     try {
       resolvedFile = fs.realpathSync(file)
-      writeDelegate(`resolvedFile: ${resolvedFile}`)
+      console.log(`resolvedFile: ${resolvedFile}`)
     } catch (err) {
       core.warning(
         `Could not read "${file}". Please check symlinks and file access. Details: ${err}`
@@ -95,7 +95,7 @@ export async function hashFiles(
     // Check if in resolved roots
     if (!isInResolvedRoots(resolvedFile, resolvedRoots)) {
       outsideRootFiles.push(file)
-      writeDelegate(`outsideRootFiles: ${JSON.stringify(outsideRootFiles)}`)
+      console.log(`outsideRootFiles: ${JSON.stringify(outsideRootFiles)}`)
       if (allowOutside) {
         writeDelegate(
           `Including '${file}' since it is outside the allowed workspace root(s) and 'allowFilesOutsideWorkspace' is enabled.`
@@ -110,7 +110,7 @@ export async function hashFiles(
     }
 
     if (fs.statSync(resolvedFile).isDirectory()) {
-      writeDelegate(`Skip directory '${file}'.`)
+      console.log(`Skip directory '${file}'.`)
       continue
     }
 
@@ -122,8 +122,8 @@ export async function hashFiles(
     hasMatch = true
 
     // Log progress
-    writeDelegate(`File hashed: ${file}`)
-    writeDelegate(`Current count: ${count}`)
+    console.log(`File hashed: ${file}`)
+    console.log(`Current count: ${count}`)
   }
   result.end()
 
@@ -139,10 +139,10 @@ export async function hashFiles(
   }
 
   if (hasMatch) {
-    writeDelegate(`Found ${count} files to hash.`)
+    console.log(`Found ${count} files to hash.`)
     return result.digest('hex')
   } else {
-    writeDelegate(`No matches found for glob`)
+    console.log(`No matches found for glob`)
     return ''
   }
 }
