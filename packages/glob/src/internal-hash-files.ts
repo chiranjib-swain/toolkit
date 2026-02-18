@@ -9,7 +9,8 @@ import {Globber} from './glob.js'
 export async function hashFiles(
   globber: Globber,
   currentWorkspace: string,
-  verbose: Boolean = false
+  verbose: Boolean = false,
+  allowOutsideWorkspace: Boolean = false
 ): Promise<string> {
   const writeDelegate = verbose ? core.info : core.debug
   let hasMatch = false
@@ -20,7 +21,7 @@ export async function hashFiles(
   let count = 0
   for await (const file of globber.globGenerator()) {
     writeDelegate(file)
-    if (!file.startsWith(`${githubWorkspace}${path.sep}`)) {
+    if (!allowOutsideWorkspace && !file.startsWith(`${githubWorkspace}${path.sep}`)) {
       writeDelegate(`Ignore '${file}' since it is not under GITHUB_WORKSPACE.`)
       continue
     }
